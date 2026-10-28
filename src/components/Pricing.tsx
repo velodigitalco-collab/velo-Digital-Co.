@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { Check, Flame, Sliders, ShieldCheck } from 'lucide-react';
+import { Check, Flame, Sliders } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { PACKAGES, ADDONS, calculateProjectEstimate, formatINR } from '../utils/pricing';
+import { CinematicReveal } from './CinematicReveal';
 
 interface PricingProps {
   onSelectPackage: (packageValue: string) => void;
@@ -31,213 +32,191 @@ export function Pricing({ onSelectPackage }: PricingProps) {
   return (
     <section id="pricing" className="w-full max-w-full px-4 md:px-10 py-14 md:py-24 bg-[#0E0E0E] text-[#FFFEF9] relative overflow-hidden">
       {/* Background radial atmosphere */}
-      <div className="absolute top-0 left-0 w-[600px] h-[600px] max-w-full bg-[#162C6D]/25 rounded-full blur-[130px] pointer-events-none"></div>
-      <div className="absolute bottom-0 right-0 w-[450px] h-[450px] max-w-full bg-blue-500/10 rounded-full blur-[110px] pointer-events-none"></div>
+      <div className="absolute top-0 left-0 w-[600px] h-[600px] max-w-full bg-[#162C6D]/25 rounded-full blur-[130px] pointer-events-none transform-gpu"></div>
+      <div className="absolute bottom-0 right-0 w-[450px] h-[450px] max-w-full bg-blue-500/10 rounded-full blur-[110px] pointer-events-none transform-gpu"></div>
 
       <div className="relative z-10 w-full max-w-7xl mx-auto">
-        {/* Header banner */}
-        <motion.div
-          initial={{ opacity: 0, y: 25 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-60px' }}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="w-full flex flex-wrap justify-between items-start gap-6 mb-12"
-        >
-          <div>
-            <div className="text-[10px] tracking-[0.2em] font-[700] uppercase text-blue-400 mb-2">
-              TRANSPARENT CLIENT PRICING
-            </div>
-            <h2 className="text-[11vw] sm:text-[8vw] md:text-[6.5vw] leading-[0.85] tracking-[-0.05em] font-[800]">
-              PRICING THAT WORKS.
-            </h2>
-          </div>
-
-          <motion.div
-            whileHover={{ y: -3 }}
-            className="bg-white/10 backdrop-blur-2xl border border-white/15 p-5 md:p-6 rounded-[22px] max-w-full md:max-w-[340px] w-full text-white shadow-xl"
-          >
-            <p className="serif text-[16px] md:text-[18px] leading-[1.35] text-white/90">
-              20% OFF for first 3 customers. Glass morphism + cinematic theme included.
-            </p>
-            <div className="mt-4 flex items-center justify-between">
-              <div className="text-[10px] tracking-[0.16em] font-[800] text-amber-300 flex items-center gap-1.5">
-                <Flame className="w-3.5 h-3.5 fill-amber-300 text-amber-300 animate-bounce" />
-                <span>2 SLOTS LEFT</span>
+        {/* Header banner with IntersectionObserver */}
+        <CinematicReveal direction="up" distancePx={30} durationMs={750} threshold={0.1}>
+          <div className="w-full flex flex-wrap justify-between items-start gap-6 mb-12">
+            <div>
+              <div className="text-[10px] tracking-[0.2em] font-[700] uppercase text-blue-400 mb-2">
+                TRANSPARENT CLIENT PRICING
               </div>
-              <span className="text-[9px] opacity-60 tracking-wider font-mono">Q1 2026 COHORT</span>
+              <h2 className="text-[11vw] sm:text-[8vw] md:text-[6.5vw] leading-[0.85] tracking-[-0.05em] font-[800]">
+                PRICING THAT WORKS.
+              </h2>
             </div>
-          </motion.div>
-        </motion.div>
 
-        {/* 3 Main Pricing Cards with staggered entrance */}
+            <div className="bg-white/10 backdrop-blur-2xl border border-white/15 p-5 md:p-6 rounded-[22px] max-w-full md:max-w-[340px] w-full text-white shadow-xl">
+              <p className="serif text-[16px] md:text-[18px] leading-[1.35] text-white/90">
+                20% OFF for first 3 customers. Glass morphism + cinematic theme included.
+              </p>
+              <div className="mt-4 flex items-center justify-between">
+                <div className="text-[10px] tracking-[0.16em] font-[800] text-amber-300 flex items-center gap-1.5">
+                  <Flame className="w-3.5 h-3.5 fill-amber-300 text-amber-300 animate-bounce" />
+                  <span>2 SLOTS LEFT</span>
+                </div>
+                <span className="text-[9px] opacity-60 tracking-wider font-mono">Q1 2026 COHORT</span>
+              </div>
+            </div>
+          </div>
+        </CinematicReveal>
+
+        {/* 3 Main Pricing Cards with Staggered IntersectionObserver Fade-ins */}
         <div className="w-full max-w-full grid grid-cols-1 md:grid-cols-3 gap-5">
           {/* Card 1: Starter */}
-          <motion.div
-            initial={{ opacity: 0, y: 35 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-50px' }}
-            transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            whileHover={{ y: -6 }}
-            className="w-full bg-white/[0.06] backdrop-blur-2xl border border-white/10 p-6 md:p-8 rounded-[22px] md:rounded-[28px] flex flex-col justify-between hover:border-white/25 transition-all shadow-xl"
-          >
-            <div>
-              <div className="flex justify-between items-center text-[10px] tracking-[0.2em] text-white/50 font-[700]">
-                <span>STARTER / 01</span>
-                <span>3 - 5 DAYS</span>
+          <CinematicReveal direction="up" distancePx={35} delayMs={100} durationMs={750} threshold={0.1} className="h-full flex">
+            <div className="w-full bg-white/[0.06] backdrop-blur-2xl border border-white/10 p-6 md:p-8 rounded-[22px] md:rounded-[28px] flex flex-col justify-between hover:border-white/25 transition-all shadow-xl hover:-translate-y-1.5 duration-300">
+              <div>
+                <div className="flex justify-between items-center text-[10px] tracking-[0.2em] text-white/50 font-[700]">
+                  <span>STARTER / 01</span>
+                  <span>3 - 5 DAYS</span>
+                </div>
+
+                <div className="mt-6 text-[36px] md:text-[44px] font-[800] tracking-[-0.03em] text-white">
+                  ₹7,999
+                </div>
+                <p className="text-[12px] text-white/70 mt-1 font-medium">
+                  Small businesses, personal brands &amp; portfolios
+                </p>
+
+                <div className="mt-6 pt-5 border-t border-white/10">
+                  <ul className="space-y-3 text-[12px] text-white/80 leading-[1.45]">
+                    <li className="flex items-start gap-2">
+                      <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                      <span>Up to 3 Custom Pages</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                      <span>Custom Logo + Glass UI Concept</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                      <span>Mobile Responsive + Cinematic Theme</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                      <span>Basic SEO • 30 Days Technical Support</span>
+                    </li>
+                  </ul>
+                </div>
               </div>
 
-              <div className="mt-6 text-[36px] md:text-[44px] font-[800] tracking-[-0.03em] text-white">
-                ₹7,999
-              </div>
-              <p className="text-[12px] text-white/70 mt-1 font-medium">
-                Small businesses, personal brands &amp; portfolios
-              </p>
-
-              <div className="mt-6 pt-5 border-t border-white/10">
-                <ul className="space-y-3 text-[12px] text-white/80 leading-[1.45]">
-                  <li className="flex items-start gap-2">
-                    <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                    <span>Up to 3 Custom Pages</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                    <span>Custom Logo + Glass UI Concept</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                    <span>Mobile Responsive + Cinematic Theme</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                    <span>Basic SEO • 30 Days Technical Support</span>
-                  </li>
-                </ul>
-              </div>
+              <motion.button
+                whileTap={{ scale: 0.96 }}
+                type="button"
+                onClick={() => handleSelect('Starter - Rs 7,999')}
+                className="mt-8 w-full border border-white/20 hover:border-white hover:bg-white hover:text-black py-3.5 text-center text-[11px] font-[700] tracking-wider rounded-full transition-all cursor-pointer"
+              >
+                CHOOSE STARTER
+              </motion.button>
             </div>
-
-            <motion.button
-              whileTap={{ scale: 0.96 }}
-              type="button"
-              onClick={() => handleSelect('Starter - Rs 7,999')}
-              className="mt-8 w-full border border-white/20 hover:border-white hover:bg-white hover:text-black py-3.5 text-center text-[11px] font-[700] tracking-wider rounded-full transition-all cursor-pointer"
-            >
-              CHOOSE STARTER
-            </motion.button>
-          </motion.div>
+          </CinematicReveal>
 
           {/* Card 2: Business (Most Popular) */}
-          <motion.div
-            initial={{ opacity: 0, y: 35 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-50px' }}
-            transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            whileHover={{ y: -8, scale: 1.02 }}
-            className="w-full bg-[#162C6D] backdrop-blur-2xl border border-white/20 p-6 md:p-8 rounded-[22px] md:rounded-[28px] flex flex-col justify-between shadow-[0_20px_60px_rgba(22,44,109,0.7)] scale-100 md:scale-[1.02] z-20 relative"
-          >
-            <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-              <span className="text-[10px] bg-white text-black px-4 py-1 rounded-full font-[800] tracking-wider shadow-md inline-block whitespace-nowrap">
-                MOST POPULAR / 02
-              </span>
+          <CinematicReveal direction="up" distancePx={35} delayMs={200} durationMs={750} threshold={0.1} className="h-full flex">
+            <div className="w-full bg-[#162C6D] backdrop-blur-2xl border border-white/20 p-6 md:p-8 rounded-[22px] md:rounded-[28px] flex flex-col justify-between shadow-[0_20px_60px_rgba(22,44,109,0.7)] scale-100 md:scale-[1.02] z-20 relative hover:-translate-y-2 transition-all duration-300">
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                <span className="text-[10px] bg-white text-black px-4 py-1 rounded-full font-[800] tracking-wider shadow-md inline-block whitespace-nowrap">
+                  MOST POPULAR / 02
+                </span>
+              </div>
+
+              <div>
+                <div className="flex justify-between items-center text-[10px] tracking-[0.2em] text-white/70 font-[700] pt-2">
+                  <span>BUSINESS TIER</span>
+                  <span>7 - 10 DAYS</span>
+                </div>
+
+                <div className="mt-6 text-[36px] md:text-[44px] font-[800] tracking-[-0.03em] text-white">
+                  ₹14,999
+                </div>
+                <p className="text-[12px] text-white/85 mt-1 font-medium">
+                  Growing brands, studios &amp; modern companies
+                </p>
+
+                <div className="mt-6 pt-5 border-t border-white/20">
+                  <ul className="space-y-3 text-[12px] leading-[1.45] text-white">
+                    <li className="flex items-start gap-2">
+                      <Check className="w-4 h-4 text-amber-300 shrink-0 mt-0.5" />
+                      <span>Up to 7 Pages • Brand Kit • Glass Theme</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <Check className="w-4 h-4 text-amber-300 shrink-0 mt-0.5" />
+                      <span>Advanced SEO + Google Analytics 4</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <Check className="w-4 h-4 text-amber-300 shrink-0 mt-0.5" />
+                      <span>Contact Forms • Cinematic Animations</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <Check className="w-4 h-4 text-amber-300 shrink-0 mt-0.5" />
+                      <span>60 Days Priority Support &amp; Speed Setup</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <motion.button
+                whileTap={{ scale: 0.96 }}
+                type="button"
+                onClick={() => handleSelect('Business - Rs 14,999')}
+                className="mt-8 w-full bg-white hover:bg-slate-100 text-black py-4 text-center text-[11px] font-[800] tracking-[0.1em] rounded-full shadow-lg transition-transform hover:scale-[1.02] cursor-pointer"
+              >
+                CHOOSE BUSINESS —
+              </motion.button>
             </div>
-
-            <div>
-              <div className="flex justify-between items-center text-[10px] tracking-[0.2em] text-white/70 font-[700] pt-2">
-                <span>BUSINESS TIER</span>
-                <span>7 - 10 DAYS</span>
-              </div>
-
-              <div className="mt-6 text-[36px] md:text-[44px] font-[800] tracking-[-0.03em] text-white">
-                ₹14,999
-              </div>
-              <p className="text-[12px] text-white/85 mt-1 font-medium">
-                Growing brands, studios &amp; modern companies
-              </p>
-
-              <div className="mt-6 pt-5 border-t border-white/20">
-                <ul className="space-y-3 text-[12px] leading-[1.45] text-white">
-                  <li className="flex items-start gap-2">
-                    <Check className="w-4 h-4 text-amber-300 shrink-0 mt-0.5" />
-                    <span>Up to 7 Pages • Brand Kit • Glass Theme</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <Check className="w-4 h-4 text-amber-300 shrink-0 mt-0.5" />
-                    <span>Advanced SEO + Google Analytics 4</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <Check className="w-4 h-4 text-amber-300 shrink-0 mt-0.5" />
-                    <span>Contact Forms • Cinematic Animations</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <Check className="w-4 h-4 text-amber-300 shrink-0 mt-0.5" />
-                    <span>60 Days Priority Support &amp; Speed Setup</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            <motion.button
-              whileTap={{ scale: 0.96 }}
-              type="button"
-              onClick={() => handleSelect('Business - Rs 14,999')}
-              className="mt-8 w-full bg-white hover:bg-slate-100 text-black py-4 text-center text-[11px] font-[800] tracking-[0.1em] rounded-full shadow-lg transition-transform hover:scale-[1.02] cursor-pointer"
-            >
-              CHOOSE BUSINESS —
-            </motion.button>
-          </motion.div>
+          </CinematicReveal>
 
           {/* Card 3: Premium */}
-          <motion.div
-            initial={{ opacity: 0, y: 35 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-50px' }}
-            transition={{ duration: 0.7, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            whileHover={{ y: -6 }}
-            className="w-full bg-white/[0.06] backdrop-blur-2xl border border-white/10 p-6 md:p-8 rounded-[22px] md:rounded-[28px] flex flex-col justify-between hover:border-white/25 transition-all shadow-xl"
-          >
-            <div>
-              <div className="flex justify-between items-center text-[10px] tracking-[0.2em] text-white/50 font-[700]">
-                <span>PREMIUM / 03</span>
-                <span>14 - 20 DAYS</span>
+          <CinematicReveal direction="up" distancePx={35} delayMs={300} durationMs={750} threshold={0.1} className="h-full flex">
+            <div className="w-full bg-white/[0.06] backdrop-blur-2xl border border-white/10 p-6 md:p-8 rounded-[22px] md:rounded-[28px] flex flex-col justify-between hover:border-white/25 transition-all shadow-xl hover:-translate-y-1.5 duration-300">
+              <div>
+                <div className="flex justify-between items-center text-[10px] tracking-[0.2em] text-white/50 font-[700]">
+                  <span>PREMIUM / 03</span>
+                  <span>14 - 20 DAYS</span>
+                </div>
+
+                <div className="mt-6 text-[36px] md:text-[44px] font-[800] tracking-[-0.03em] text-white">
+                  ₹24,999+
+                </div>
+                <p className="text-[12px] text-white/70 mt-1 font-medium">
+                  Established enterprises &amp; ecommerce leaders
+                </p>
+
+                <div className="mt-6 pt-5 border-t border-white/10">
+                  <ul className="space-y-3 text-[12px] text-white/80 leading-[1.45]">
+                    <li className="flex items-start gap-2">
+                      <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                      <span>Up to 15+ Pages • Full Branding Identity</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                      <span>Ecommerce / CMS Headless Ready</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                      <span>Full Glass Morphism + Fluid GSAP Motion</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                      <span>90 Days Support + Continuous Maintenance</span>
+                    </li>
+                  </ul>
+                </div>
               </div>
 
-              <div className="mt-6 text-[36px] md:text-[44px] font-[800] tracking-[-0.03em] text-white">
-                ₹24,999+
-              </div>
-              <p className="text-[12px] text-white/70 mt-1 font-medium">
-                Established enterprises &amp; ecommerce leaders
-              </p>
-
-              <div className="mt-6 pt-5 border-t border-white/10">
-                <ul className="space-y-3 text-[12px] text-white/80 leading-[1.45]">
-                  <li className="flex items-start gap-2">
-                    <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                    <span>Up to 15+ Pages • Full Branding Identity</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                    <span>Ecommerce / CMS Headless Ready</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                    <span>Full Glass Morphism + Fluid GSAP Motion</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                    <span>90 Days Support + Continuous Maintenance</span>
-                  </li>
-                </ul>
-              </div>
+              <motion.button
+                whileTap={{ scale: 0.96 }}
+                type="button"
+                onClick={() => handleSelect('Premium - Rs 24,999+')}
+                className="mt-8 w-full border border-white/20 hover:border-white hover:bg-white hover:text-black py-3.5 text-center text-[11px] font-[700] tracking-wider rounded-full transition-all cursor-pointer"
+              >
+                CHOOSE PREMIUM
+              </motion.button>
             </div>
-
-            <motion.button
-              whileTap={{ scale: 0.96 }}
-              type="button"
-              onClick={() => handleSelect('Premium - Rs 24,999+')}
-              className="mt-8 w-full border border-white/20 hover:border-white hover:bg-white hover:text-black py-3.5 text-center text-[11px] font-[700] tracking-wider rounded-full transition-all cursor-pointer"
-            >
-              CHOOSE PREMIUM
-            </motion.button>
-          </motion.div>
+          </CinematicReveal>
         </div>
 
         {/* Custom Cost Estimator Toggle */}

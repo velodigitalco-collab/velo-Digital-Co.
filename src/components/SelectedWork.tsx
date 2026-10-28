@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { ExternalLink, ArrowRight, Eye, Sparkles } from 'lucide-react';
+import { ExternalLink, ArrowRight, Eye } from 'lucide-react';
 import { motion } from 'motion/react';
 import { CaseStudyModal, ProjectData } from './CaseStudyModal';
+import { CinematicReveal } from './CinematicReveal';
 
 const PROJECTS: ProjectData[] = [
   {
@@ -86,117 +87,107 @@ export function SelectedWork() {
 
   return (
     <section id="work" className="w-full max-w-full px-4 md:px-10 py-14 md:py-24 relative">
-      {/* Section Header */}
-      <motion.div
-        initial={{ opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '-60px' }}
-        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-        className="w-full flex flex-wrap justify-between items-end gap-4 mb-8 md:mb-14"
-      >
-        <div>
-          <span className="text-[10px] font-[800] tracking-[0.2em] uppercase text-[#162C6D] block mb-2">
-            PROVEN TRACK RECORD
+      {/* Section Header with Intersection Observer Fade-in */}
+      <CinematicReveal direction="up" distancePx={28} durationMs={750} threshold={0.1}>
+        <div className="w-full flex flex-wrap justify-between items-end gap-4 mb-8 md:mb-14">
+          <div>
+            <span className="text-[10px] font-[800] tracking-[0.2em] uppercase text-[#162C6D] block mb-2">
+              PROVEN TRACK RECORD
+            </span>
+            <h2 className="text-[38px] md:text-[68px] leading-[0.88] tracking-[-0.04em] font-[800] text-[#0E0E0E]">
+              SELECTED<br />WORK
+            </h2>
+          </div>
+          <span className="serif text-[14px] md:text-[18px] italic glass-card px-5 py-2.5 rounded-full text-[#0E0E0E]/80 shadow-sm cursor-default">
+            [2023 — 2026] • 03 PROJECTS
           </span>
-          <h2 className="text-[38px] md:text-[68px] leading-[0.88] tracking-[-0.04em] font-[800] text-[#0E0E0E]">
-            SELECTED<br />WORK
-          </h2>
         </div>
-        <motion.span
-          whileHover={{ scale: 1.03 }}
-          className="serif text-[14px] md:text-[18px] italic glass-card px-5 py-2.5 rounded-full text-[#0E0E0E]/80 shadow-sm cursor-default"
-        >
-          [2023 — 2026] • 03 PROJECTS
-        </motion.span>
-      </motion.div>
+      </CinematicReveal>
 
-      {/* Grid of Work */}
+      {/* Grid of Work Cards with Staggered Intersection Observer Fade-ins */}
       <div className="w-full max-w-full grid grid-cols-1 md:grid-cols-3 gap-5">
         {PROJECTS.map((project, index) => (
-          <motion.div
+          <CinematicReveal
             key={project.id}
-            initial={{ opacity: 0, y: 35 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-50px' }}
-            transition={{
-              duration: 0.75,
-              delay: index * 0.14,
-              ease: [0.16, 1, 0.3, 1],
-            }}
-            whileHover={{ y: -6 }}
-            className="w-full glass-card p-5 md:p-8 rounded-[22px] md:rounded-[28px] transition-shadow duration-300 hover:shadow-2xl flex flex-col justify-between group"
+            direction="up"
+            distancePx={35}
+            durationMs={750}
+            delayMs={index * 130}
+            threshold={0.1}
+            className="h-full flex"
           >
-            <div>
-              {/* Image Frame with overflow hidden and smooth zoom */}
-              <div
-                className={`w-full border-[1.5px] border-black aspect-[4/3] ${project.bgColor} rounded-[16px] md:rounded-[20px] overflow-hidden relative shadow-inner`}
-              >
-                <img
-                  src={project.image}
-                  alt={`${project.title} Preview`}
-                  className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-108"
-                  loading="lazy"
-                  onError={(e) => {
-                    // Fallback to high quality alternate architectural image if needed
-                    e.currentTarget.src =
-                      'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=800&q=80&auto=format&fit=crop';
-                  }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent"></div>
+            <div className="w-full glass-card p-5 md:p-8 rounded-[22px] md:rounded-[28px] transition-all duration-300 hover:shadow-2xl hover:-translate-y-1.5 flex flex-col justify-between group">
+              <div>
+                {/* Image Frame with overflow hidden and smooth zoom */}
+                <div
+                  className={`w-full border-[1.5px] border-black aspect-[4/3] ${project.bgColor} rounded-[16px] md:rounded-[20px] overflow-hidden relative shadow-inner`}
+                >
+                  <img
+                    src={project.image}
+                    alt={`${project.title} Preview`}
+                    className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-108"
+                    loading="lazy"
+                    onError={(e) => {
+                      e.currentTarget.src =
+                        'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=800&q=80&auto=format&fit=crop';
+                    }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent"></div>
 
-                <div className={`absolute bottom-3.5 left-3.5 ${project.badgeStyle} px-3 py-1 rounded-full text-[10px] font-[800] tracking-wide shadow-md`}>
-                  {project.badge}
+                  <div className={`absolute bottom-3.5 left-3.5 ${project.badgeStyle} px-3 py-1 rounded-full text-[10px] font-[800] tracking-wide shadow-md`}>
+                    {project.badge}
+                  </div>
+
+                  <motion.button
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    type="button"
+                    onClick={() => setActiveProject(project)}
+                    className="absolute top-3.5 right-3.5 bg-black/60 hover:bg-black text-white p-2.5 rounded-full opacity-90 sm:opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm shadow-md cursor-pointer"
+                    title="View Case Study Details"
+                  >
+                    <Eye className="w-4 h-4" />
+                  </motion.button>
                 </div>
 
-                <motion.button
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
+                {/* Title and Live link */}
+                <div className="mt-5 w-full flex justify-between items-center">
+                  <span className="font-[700] text-[14px] text-[#0E0E0E]">
+                    {project.title} • {project.category.split('&')[0].trim()}
+                  </span>
+                  <a
+                    href={project.liveUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-[11px] font-[700] underline hover:text-[#162C6D] transition-colors flex items-center gap-0.5 group/link"
+                    title={`Open live site for ${project.title}`}
+                  >
+                    <span>LIVE</span>
+                    <span className="inline-block transition-transform group-hover/link:translate-x-0.5">→</span>
+                  </a>
+                </div>
+
+                <p className="text-[11px] opacity-55 mt-1 font-medium">
+                  {project.tagline}
+                </p>
+              </div>
+
+              {/* Bottom action drawer trigger */}
+              <div className="mt-6 pt-4 border-t border-black/5 flex items-center justify-between text-[11px]">
+                <button
                   type="button"
                   onClick={() => setActiveProject(project)}
-                  className="absolute top-3.5 right-3.5 bg-black/60 hover:bg-black text-white p-2.5 rounded-full opacity-90 sm:opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm shadow-md"
-                  title="View Case Study Details"
+                  className="font-[700] text-[#162C6D] hover:underline flex items-center gap-1 cursor-pointer"
                 >
-                  <Eye className="w-4 h-4" />
-                </motion.button>
-              </div>
-
-              {/* Title and Live link */}
-              <div className="mt-5 w-full flex justify-between items-center">
-                <span className="font-[700] text-[14px] text-[#0E0E0E]">
-                  {project.title} • {project.category.split('&')[0].trim()}
+                  <span>Read Case Study</span>
+                  <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+                </button>
+                <span className="text-[10px] opacity-50 font-mono">
+                  {project.metrics[0].value} {project.metrics[0].label}
                 </span>
-                <a
-                  href={project.liveUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-[11px] font-[700] underline hover:text-[#162C6D] transition-colors flex items-center gap-0.5 group/link"
-                  title={`Open live site for ${project.title}`}
-                >
-                  <span>LIVE</span>
-                  <span className="inline-block transition-transform group-hover/link:translate-x-0.5">→</span>
-                </a>
               </div>
-
-              <p className="text-[11px] opacity-55 mt-1 font-medium">
-                {project.tagline}
-              </p>
             </div>
-
-            {/* Bottom action drawer trigger */}
-            <div className="mt-6 pt-4 border-t border-black/5 flex items-center justify-between text-[11px]">
-              <button
-                type="button"
-                onClick={() => setActiveProject(project)}
-                className="font-[700] text-[#162C6D] hover:underline flex items-center gap-1 cursor-pointer"
-              >
-                <span>Read Case Study</span>
-                <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
-              </button>
-              <span className="text-[10px] opacity-50 font-mono">
-                {project.metrics[0].value} {project.metrics[0].label}
-              </span>
-            </div>
-          </motion.div>
+          </CinematicReveal>
         ))}
       </div>
 

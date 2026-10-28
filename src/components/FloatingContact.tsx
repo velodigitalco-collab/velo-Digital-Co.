@@ -6,12 +6,19 @@ export function FloatingContact() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
+    let ticking = false;
+
     const handleScroll = () => {
-      // Show when scrolled past 350px
-      if (window.scrollY > 350) {
-        setVisible(true);
-      } else {
-        setVisible(false);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          if (window.scrollY > 350) {
+            setVisible(true);
+          } else {
+            setVisible(false);
+          }
+          ticking = false;
+        });
+        ticking = true;
       }
     };
 
@@ -30,8 +37,8 @@ export function FloatingContact() {
           initial={{ opacity: 0, y: 20, scale: 0.9 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 15, scale: 0.9 }}
-          transition={{ type: 'spring', damping: 20, stiffness: 260 }}
-          className="fixed bottom-5 right-4 sm:right-6 z-40 flex items-center gap-2"
+          transition={{ type: 'spring', damping: 22, stiffness: 280 }}
+          className="fixed bottom-5 right-4 sm:right-6 z-40 flex items-center gap-2 transform-gpu"
           role="region"
           aria-label="Quick contact controls"
         >
